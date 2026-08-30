@@ -1,0 +1,876 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Authentication System</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #0f172a, #1d4ed8);
+        }
+
+
+
+        .auth-container {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .auth-card {
+            width: 100%;
+            max-width: 420px;
+            background: white;
+            padding: 35px;
+            border-radius: 18px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25);
+        }
+
+        .auth-card h1 {
+            text-align: center;
+            color: #0f172a;
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #64748b;
+            margin-bottom: 25px;
+        }
+
+        .input-group {
+            margin-bottom: 18px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 7px;
+            font-weight: bold;
+            color: #334155;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 13px;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            outline: none;
+            font-size: 15px;
+        }
+
+        .input-group input:focus {
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+        }
+
+        .auth-btn {
+            width: 100%;
+            border: none;
+            background: #2563eb;
+            color: white;
+            padding: 13px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .auth-btn:hover {
+            background: #1d4ed8;
+        }
+
+        .message {
+            min-height: 20px;
+            margin-bottom: 12px;
+            font-size: 14px;
+            text-align: center;
+            font-weight: 500;
+        }
+
+        .error {
+            color: #dc2626;
+        }
+
+        .success {
+            color: #16a34a;
+        }
+
+        .switch-page {
+            text-align: center;
+            margin-top: 20px;
+            color: #64748b;
+        }
+
+        .switch-page a {
+            color: #2563eb;
+            font-weight: bold;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+
+        .dashboard {
+            min-height: 100vh;
+            background: #f1f5f9;
+        }
+
+        .navbar {
+            background: #0f172a;
+            color: white;
+            padding: 18px 8%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .navbar button {
+            border: none;
+            background: #ef4444;
+            color: white;
+            padding: 10px 18px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .dashboard-content {
+            width: 90%;
+            max-width: 1100px;
+            margin: auto;
+            padding: 60px 0;
+        }
+
+        .welcome-card {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+            margin-bottom: 25px;
+        }
+
+        .welcome-card h1 {
+            color: #0f172a;
+            margin-bottom: 12px;
+        }
+
+        .welcome-card p {
+            color: #64748b;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .info-card {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
+        }
+
+        .info-card h3 {
+            margin-bottom: 10px;
+            color: #2563eb;
+        }
+
+        .info-card p {
+            color: #64748b;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        @media (max-width: 600px) {
+
+            .auth-card {
+                padding: 25px 20px;
+            }
+
+            .navbar {
+                padding: 15px 5%;
+            }
+
+            .navbar h2 {
+                font-size: 18px;
+            }
+
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .welcome-card {
+                padding: 25px;
+            }
+
+        }
+
+    </style>
+</head>
+
+<body>
+
+
+    <section id="loginPage" class="auth-container">
+
+        <div class="auth-card">
+
+            <h1>Welcome Back</h1>
+
+            <p class="subtitle">
+                Login to access your dashboard
+            </p>
+
+            <form id="loginForm">
+
+                <div class="input-group">
+
+                    <label for="loginUsername">
+                        Username or Email
+                    </label>
+
+                    <input
+                        type="text"
+                        id="loginUsername"
+                        placeholder="Enter username or email"
+                        required
+                    >
+
+                </div>
+
+                <div class="input-group">
+
+                    <label for="loginPassword">
+                        Password
+                    </label>
+
+                    <input
+                        type="password"
+                        id="loginPassword"
+                        placeholder="Enter your password"
+                        required
+                    >
+
+                </div>
+
+                <p id="loginMessage" class="message"></p>
+
+                <button type="submit" class="auth-btn">
+                    Login
+                </button>
+
+            </form>
+
+            <p class="switch-page">
+
+                Don't have an account?
+
+                <a id="showRegister">
+                    Register Now
+                </a>
+
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <section id="registerPage" class="auth-container hidden">
+
+        <div class="auth-card">
+
+            <h1>Create Account</h1>
+
+            <p class="subtitle">
+                Register to create your account
+            </p>
+
+            <form id="registerForm">
+
+                <div class="input-group">
+
+                    <label for="username">
+                        Username
+                    </label>
+
+                    <input
+                        type="text"
+                        id="username"
+                        placeholder="Enter your username"
+                        required
+                    >
+
+                </div>
+
+                <div class="input-group">
+
+                    <label for="email">
+                        Email Address
+                    </label>
+
+                    <input
+                        type="email"
+                        id="email"
+                        placeholder="Enter your email"
+                        required
+                    >
+
+                </div>
+
+                <div class="input-group">
+
+                    <label for="password">
+                        Password
+                    </label>
+
+                    <input
+                        type="password"
+                        id="password"
+                        placeholder="Minimum 8 characters and 1 number"
+                        required
+                    >
+
+                </div>
+
+                <p id="registerMessage" class="message"></p>
+
+                <button type="submit" class="auth-btn">
+                    Register
+                </button>
+
+            </form>
+
+            <p class="switch-page">
+
+                Already have an account?
+
+                <a id="showLogin">
+                    Login
+                </a>
+
+            </p>
+
+        </div>
+
+    </section>
+
+
+
+
+    <section id="dashboardPage" class="dashboard hidden">
+
+        <nav class="navbar">
+
+            <h2>My Dashboard</h2>
+
+            <button id="logoutBtn">
+                Logout
+            </button>
+
+        </nav>
+
+        <main class="dashboard-content">
+
+            <div class="welcome-card">
+
+                <h1>
+                    Welcome,
+                    <span id="userName">User</span>! 👋
+                </h1>
+
+                <p>
+                    You have successfully logged in to your protected dashboard.
+                </p>
+
+            </div>
+
+
+            <div class="info-grid">
+
+                <div class="info-card">
+
+                    <h3>🔒 Protected Page</h3>
+
+                    <p>
+                        This page is only accessible after successful login.
+                    </p>
+
+                </div>
+
+
+                <div class="info-card">
+
+                    <h3>👤 My Account</h3>
+
+                    <p>
+                        Email:
+                        <span id="userEmail"></span>
+                    </p>
+
+                </div>
+
+
+                <div class="info-card">
+
+                    <h3>✅ Login Status</h3>
+
+                    <p>
+                        You are currently logged in.
+                    </p>
+
+                </div>
+
+
+                <div class="info-card">
+
+                    <h3>🚀 Authentication System</h3>
+
+                    <p>
+                        User authentication is managed using localStorage.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </main>
+
+    </section>
+
+
+    <script>
+
+        const loginPage =
+            document.getElementById("loginPage");
+
+        const registerPage =
+            document.getElementById("registerPage");
+
+        const dashboardPage =
+            document.getElementById("dashboardPage");
+
+
+
+        function showLoginPage() {
+
+            loginPage.classList.remove("hidden");
+
+            registerPage.classList.add("hidden");
+
+            dashboardPage.classList.add("hidden");
+
+        }
+
+
+        function showRegisterPage() {
+
+            loginPage.classList.add("hidden");
+
+            registerPage.classList.remove("hidden");
+
+            dashboardPage.classList.add("hidden");
+
+        }
+
+
+        function showDashboardPage() {
+
+            loginPage.classList.add("hidden");
+
+            registerPage.classList.add("hidden");
+
+            dashboardPage.classList.remove("hidden");
+
+        }
+
+
+        document
+            .getElementById("showRegister")
+            .addEventListener("click", showRegisterPage);
+
+
+        document
+            .getElementById("showLogin")
+            .addEventListener("click", showLoginPage);
+
+
+        async function hashPassword(password) {
+
+            const encoder = new TextEncoder();
+
+            const data = encoder.encode(password);
+
+            const hashBuffer =
+                await crypto.subtle.digest(
+                    "SHA-256",
+                    data
+                );
+
+            const hashArray =
+                Array.from(
+                    new Uint8Array(hashBuffer)
+                );
+
+            const hashHex =
+                hashArray
+                    .map(function (byte) {
+
+                        return byte
+                            .toString(16)
+                            .padStart(2, "0");
+
+                    })
+                    .join("");
+
+            return hashHex;
+
+        }
+
+
+        document
+            .getElementById("registerForm")
+            .addEventListener(
+                "submit",
+                async function(event) {
+
+                    event.preventDefault();
+
+
+                    const username =
+                        document
+                            .getElementById("username")
+                            .value
+                            .trim();
+
+
+                    const email =
+                        document
+                            .getElementById("email")
+                            .value
+                            .trim()
+                            .toLowerCase();
+
+
+                    const password =
+                        document
+                            .getElementById("password")
+                            .value;
+
+
+                    const message =
+                        document
+                            .getElementById(
+                                "registerMessage"
+                            );
+
+
+                
+
+                    if (
+                        username === "" ||
+                        email === "" ||
+                        password === ""
+                    ) {
+
+                        message.textContent =
+                            "Please fill in all fields.";
+
+                        message.className =
+                            "message error";
+
+                        return;
+
+                    }
+
+
+
+                    const passwordValid =
+                        password.length >= 8 &&
+                        /\d/.test(password);
+
+
+                    if (!passwordValid) {
+
+                        message.textContent =
+                            "Password must contain at least 8 characters and 1 number.";
+
+                        message.className =
+                            "message error";
+
+                        return;
+
+                    }
+
+
+                    const users =
+                        JSON.parse(
+                            localStorage.getItem("users")
+                        ) || [];
+
+
+                    const userExists =
+                        users.some(function(user) {
+
+                            return (
+                                user.username
+                                    .toLowerCase() ===
+                                username.toLowerCase()
+                            ) ||
+                            (
+                                user.email
+                                    .toLowerCase() ===
+                                email
+                            );
+
+                        });
+
+
+                    if (userExists) {
+
+                        message.textContent =
+                            "Username or email already exists.";
+
+                        message.className =
+                            "message error";
+
+                        return;
+
+                    }
+
+
+                    const hashedPassword =
+                        await hashPassword(password);
+
+
+                    const newUser = {
+
+                        username: username,
+
+                        email: email,
+
+                        password: hashedPassword
+
+                    };
+
+
+                    users.push(newUser);
+
+
+                    localStorage.setItem(
+                        "users",
+                        JSON.stringify(users)
+                    );
+
+
+                    message.textContent =
+                        "Registration successful! Please login.";
+
+                    message.className =
+                        "message success";
+
+
+                    document
+                        .getElementById("registerForm")
+                        .reset();
+
+
+                    setTimeout(function() {
+
+                        showLoginPage();
+
+                    }, 1500);
+
+                }
+            );
+
+
+
+        document
+            .getElementById("loginForm")
+            .addEventListener(
+                "submit",
+                async function(event) {
+
+                    event.preventDefault();
+
+
+                    const loginUsername =
+                        document
+                            .getElementById("loginUsername")
+                            .value
+                            .trim()
+                            .toLowerCase();
+
+
+                    const loginPassword =
+                        document
+                            .getElementById("loginPassword")
+                            .value;
+
+
+                    const message =
+                        document
+                            .getElementById(
+                                "loginMessage"
+                            );
+
+
+                    if (
+                        loginUsername === "" ||
+                        loginPassword === ""
+                    ) {
+
+                        message.textContent =
+                            "Please fill in all fields.";
+
+                        message.className =
+                            "message error";
+
+                        return;
+
+                    }
+
+
+                    const users =
+                        JSON.parse(
+                            localStorage.getItem("users")
+                        ) || [];
+
+
+                    const hashedPassword =
+                        await hashPassword(
+                            loginPassword
+                        );
+
+
+                    const user =
+                        users.find(function(user) {
+
+                            return (
+                                user.username
+                                    .toLowerCase() ===
+                                loginUsername ||
+                                user.email
+                                    .toLowerCase() ===
+                                loginUsername
+                            ) &&
+                            user.password ===
+                            hashedPassword;
+
+                        });
+
+
+                    if (!user) {
+
+                        message.textContent =
+                            "Invalid username/email or password.";
+
+                        message.className =
+                            "message error";
+
+                        return;
+
+                    }
+
+
+        
+
+                    const currentUser = {
+
+                        username: user.username,
+
+                        email: user.email
+
+                    };
+
+
+                    localStorage.setItem(
+                        "currentUser",
+                        JSON.stringify(currentUser)
+                    );
+
+
+                    document
+                        .getElementById("userName")
+                        .textContent =
+                        currentUser.username;
+
+
+                    document
+                        .getElementById("userEmail")
+                        .textContent =
+                        currentUser.email;
+
+
+                    document
+                        .getElementById("loginForm")
+                        .reset();
+
+
+                    showDashboardPage();
+
+                }
+            );
+
+
+        document
+            .getElementById("logoutBtn")
+            .addEventListener(
+                "click",
+                function() {
+
+                    localStorage.removeItem(
+                        "currentUser"
+                    );
+
+                    showLoginPage();
+
+                }
+            );
+
+
+        const currentUser =
+            JSON.parse(
+                localStorage.getItem("currentUser")
+            );
+
+
+        if (currentUser) {
+
+            document
+                .getElementById("userName")
+                .textContent =
+                currentUser.username;
+
+
+            document
+                .getElementById("userEmail")
+                .textContent =
+                currentUser.email;
+
+
+            showDashboardPage();
+
+        }
+
+    </script>
+
+</body>
+</html>
